@@ -76,9 +76,13 @@ WSGI_APPLICATION = 'meiduo.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+        'ENGINE': 'django.db.backends.mysql',
+        'HOST': '127.0.0.1',
+        'PORT': 3306,
+        'USER': 'root',
+        'PASSWORD': 'wangxinyu',
+        'NAME': 'meiduodb'
+    },
 }
 
 
@@ -119,3 +123,31 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# 配置 django-redis
+CACHES = {
+    # 默认
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        # redis 地址和数据库号
+        "LOCATION": "redis://192.168.83.154:6379/0",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+    # session
+    "session": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        # redis 地址和数据库号
+        "LOCATION": "redis://192.168.83.154:6379/3",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+}
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "session"
+
+
+
+
